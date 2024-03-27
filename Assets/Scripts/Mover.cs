@@ -4,6 +4,7 @@ using UnityEngine.AI;
 public class Mover : MonoBehaviour
 {
     public float m_speed = 10f;
+    private Vector3 targetDirection;
     // Update is called once per frame
     void Update()
     {
@@ -39,24 +40,33 @@ public class Mover : MonoBehaviour
 
     private void MoveByKey(KeyCode key)
     {
-        if (Input.GetKeyDown(key))
-        {
-            if (key == KeyCode.DownArrow)
-            {
-                transform.Rotate(0, 180, 0);
-            }
-            else if (key == KeyCode.LeftArrow)
-            {
-                transform.Rotate(0, -90, 0);
-            }
-            else if (key == KeyCode.RightArrow)
-            {
-                transform.Rotate(0, 90, 0);
-            }
-        }
+        // if (Input.GetKeyDown(key))
+        // {
+        //     if (key == KeyCode.DownArrow)
+        //     {
+
+        //     }
+        // }
+
 
         if (Input.GetKey(key))
         {
+            if (key == KeyCode.DownArrow)
+            {
+                targetDirection = -transform.right;
+            }
+            else if (key == KeyCode.LeftArrow)
+            {
+                targetDirection = -transform.right;
+            }
+            else if (key == KeyCode.RightArrow)
+            {
+                targetDirection = transform.right;
+            }
+
+            if (targetDirection == null)
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(transform.forward), 2f * Time.deltaTime);
+            else transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetDirection), 2f * Time.deltaTime);
 
             transform.position = transform.position + transform.forward * m_speed * Time.deltaTime;
 
@@ -65,7 +75,7 @@ public class Mover : MonoBehaviour
 
         if (Input.GetKeyUp(key))
         {
-            GetComponent<Animator>().SetFloat("forwardSpeed", 0);
+            GetComponent<Animator>().SetFloat("forwardSpeed", 0); targetDirection = transform.forward;
         }
     }
 }
