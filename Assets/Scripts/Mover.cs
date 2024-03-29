@@ -3,8 +3,9 @@ using UnityEngine;
 public class Mover : MonoBehaviour
 {
     // public float m_speed = 10f;
-    private Vector3 targetDirection;
-    private float speed, acceleration = 20f;
+    private Vector3 TargetDirection;
+    private float Speed;
+    private readonly float Acceleration = 20f;
 
     // Update is called once per frame
     void Update()
@@ -14,41 +15,38 @@ public class Mover : MonoBehaviour
 
     private void MoveByKey()
     {
-        if (Input.GetKey(KeyCode.D)) targetDirection = transform.right;
-        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S)) targetDirection = -transform.right;
-
+        if (Input.GetKey(KeyCode.D)) TargetDirection = transform.right;
+        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S)) TargetDirection = -transform.right;
 
         if (GetDirectionKey())
         {
-            if (targetDirection == null)
+            if (TargetDirection == null)
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(transform.forward), 3f * Time.deltaTime);
-            else transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetDirection), 3f * Time.deltaTime);
+            else transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(TargetDirection), 3f * Time.deltaTime);
 
-            speed += acceleration * Time.deltaTime;
-            speed = Mathf.Min(speed, 10f);
+            Speed += Acceleration * Time.deltaTime;
+            Speed = Mathf.Min(Speed, 10f);
 
-            transform.position = transform.position + transform.forward * speed * Time.deltaTime;
+            transform.position = transform.position + Speed * Time.deltaTime * transform.forward;
 
-            GetComponent<Animator>().SetFloat("forwardSpeed", speed);
+            GetComponent<Animator>().SetFloat("forwardSpeed", Speed);
         }
-        else speed = 0;
+        else Speed = 0;
 
 
         if (GetDirectionKeyUp())
         {
             GetComponent<Animator>().SetFloat("forwardSpeed", 0);
-            targetDirection = transform.forward;
+            TargetDirection = transform.forward;
         }
     }
 
     private bool GetDirectionKey()
     {
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S)) return true;
-        return false;
+        return Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S);
     }
     private bool GetDirectionKeyUp()
     {
-        if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S)) return true;
-        return false;
+        return Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S);
     }
 }
