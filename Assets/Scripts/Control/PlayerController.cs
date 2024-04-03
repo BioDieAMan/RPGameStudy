@@ -1,5 +1,6 @@
 using RPG.Combat;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace RPG.Control
 {
@@ -9,12 +10,12 @@ namespace RPG.Control
         // ActionStore actionStore;
         public float Speed;
         private float MaxSpeed = 10f;
+        private float MinSpeed = 0f;
         private readonly float Acceleration = 20f;
-
         private void Update()
         {
-            MoveByKey();
             InteractWithCombat();
+            MoveByKey();
         }
 
         public void MoveByKey()
@@ -33,7 +34,12 @@ namespace RPG.Control
 
                 transform.position = transform.position + Speed * Time.deltaTime * transform.forward;
             }
-            else Speed = 0;
+            else
+            {
+                Speed -= Acceleration * Time.deltaTime;
+                Speed = Mathf.Max(Speed, MinSpeed);
+                transform.position = transform.position + Speed * Time.deltaTime * transform.forward;
+            }
 
             if (GetDirectionKeyUp())
             {

@@ -5,9 +5,7 @@ namespace RPG.Movement
 {
     public class Mover : MonoBehaviour
     {
-        private Vector3 TargetDirection;
         private float Speed;
-        private readonly float Acceleration = 20f;
 
         // Update is called once per frame
         void Update()
@@ -18,7 +16,7 @@ namespace RPG.Movement
         private void UpdateAnimator()
         {
             Speed = GetComponent<PlayerController>().Speed;
-            GetComponent<Animator>().SetFloat("forwardSpeed", Speed);
+            GetComponent<Animator>().SetFloat("Speed", Speed);
         }
     }
 }
