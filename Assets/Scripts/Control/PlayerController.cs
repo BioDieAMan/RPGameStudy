@@ -1,6 +1,6 @@
 using RPG.Combat;
+using RPG.Core;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace RPG.Control
 {
@@ -20,6 +20,10 @@ namespace RPG.Control
 
         public void MoveByKey()
         {
+            if (GetDirectionKeyDown())
+            {
+                GetComponent<ActionScheduler>().StartAction(this);
+            }
             if (Input.GetKey(KeyCode.D)) TargetDirection = transform.right;
             else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S)) TargetDirection = -transform.right;
 
@@ -63,7 +67,10 @@ namespace RPG.Control
                 return;
             }
         }
-
+        private bool GetDirectionKeyDown()
+        {
+            return Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S);
+        }
 
         private bool GetDirectionKey()
         {
