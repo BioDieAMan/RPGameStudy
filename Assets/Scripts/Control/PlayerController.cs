@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RPG.Control
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IAction
     {
         private Vector3 TargetDirection;
         // ActionStore actionStore;
@@ -12,10 +12,17 @@ namespace RPG.Control
         private float MaxSpeed = 10f;
         private float MinSpeed = 0f;
         private readonly float Acceleration = 20f;
+        public bool IsMoving;
+
+        private void Awake()
+        {
+            IsMoving = true;
+        }
+
         private void Update()
         {
-            InteractWithCombat();
             MoveByKey();
+            InteractWithCombat();
         }
 
         public void MoveByKey()
@@ -23,15 +30,17 @@ namespace RPG.Control
             if (GetDirectionKeyDown())
             {
                 GetComponent<ActionScheduler>().StartAction(this);
+                IsMoving = true;
             }
+
+            if (!IsMoving) return;
+
             if (Input.GetKey(KeyCode.D)) TargetDirection = transform.right;
             else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S)) TargetDirection = -transform.right;
 
             if (GetDirectionKey())
             {
-                if (TargetDirection == null)
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(transform.forward), 2.6f * Time.deltaTime);
-                else transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(TargetDirection), 2.6f * Time.deltaTime);
+                if (TargetDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(TargetDirection), 2.6f * Time.deltaTime);
 
                 Speed += Acceleration * Time.deltaTime;
                 Speed = Mathf.Min(Speed, MaxSpeed);
@@ -42,13 +51,11 @@ namespace RPG.Control
             {
                 Speed -= Acceleration * Time.deltaTime;
                 Speed = Mathf.Max(Speed, MinSpeed);
-                transform.position = transform.position + Speed * Time.deltaTime * transform.forward;
+                if (Speed != 0) transform.position = transform.position + Speed * Time.deltaTime * transform.forward;
             }
 
-            if (GetDirectionKeyUp())
-            {
-                TargetDirection = transform.forward;
-            }
+            if (GetDirectionKeyUp()) TargetDirection = transform.forward;
+
         }
 
         private void InteractWithCombat()
@@ -60,13 +67,17 @@ namespace RPG.Control
                 CombatTarget target = hit.transform.GetComponent<CombatTarget>();
                 if (target == null) continue;
 
-                if (Input.GetMouseButtonDown(0))
-                {
-                    GetComponent<Fighter>().Attack(target);
-                }
+                if (Input.GetMouseButtonDown(0)) GetComponent<Fighter>().Attack(target);
                 return;
             }
         }
+
+        public void Cancel()
+        {
+            Speed = 0;
+            IsMoving = false;
+        }
+
         private bool GetDirectionKeyDown()
         {
             return Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S);

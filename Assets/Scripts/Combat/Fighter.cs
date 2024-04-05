@@ -1,10 +1,11 @@
 using UnityEngine;
 using RPG.Attributes;
 using RPG.Core;
+using RPG.Control;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour
+    public class Fighter : MonoBehaviour, IAction
     {
         [SerializeField] float WeaponRange = 5f;
         [SerializeField] float timeBetweenAttacks = 1f;
@@ -16,24 +17,28 @@ namespace RPG.Combat
         private void Update()
         {
             timeSinceLastAttack += Time.deltaTime;
+            AnimatorStateInfo stateInfo = GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.normalizedTime >= 1.0f && stateInfo.IsName("Attack")) GetComponent<Animator>().SetTrigger("stopAttack");
+
         }
 
         public void Attack(CombatTarget combatTarget)
         {
-            GetComponent<ActionScheduler>().StartAction(this);
-
             Target = combatTarget.transform;
 
-            if (Target != null && !IsInRange(Target))
-            {
-                Debug.Log("not attacking target");
-            }
+            if (Target != null && !IsInRange(Target)) Debug.Log("not attacking target");
             else
             {
                 Debug.Log("attacking target");
                 AttackBehaviour();
             }
         }
+        public void Cancel()
+        {
+            GetComponent<Animator>().SetTrigger("stopAttack");
+            Target = null;
+        }
+
 
         private bool IsInRange(Transform target)
         {
@@ -62,14 +67,9 @@ namespace RPG.Combat
 
         private void TriggerAttack()
         {
-            // GetComponent<Animator>().ResetTrigger("stopAttack");
+            GetComponent<ActionScheduler>().StartAction(this);
+            GetComponent<Animator>().ResetTrigger("stopAttack");
             GetComponent<Animator>().SetTrigger("attack");
         }
-
-        private RaycastHit[] FindAllTargetInRange()
-        {
-            return Physics.SphereCastAll(transform.position, WeaponRange, Vector3.up, WeaponRange);
-        }
     }
-
 }
