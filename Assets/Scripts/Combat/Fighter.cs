@@ -1,7 +1,6 @@
 using UnityEngine;
 using RPG.Attributes;
 using RPG.Core;
-using RPG.Control;
 
 namespace RPG.Combat
 {
@@ -11,7 +10,7 @@ namespace RPG.Combat
         [SerializeField] float timeBetweenAttacks = 1f;
 
         [SerializeField] float weaponDamage = 8f;
-        Transform Target;
+        CombatTarget Target;
         float timeSinceLastAttack = Mathf.Infinity;
 
         private void Update()
@@ -24,9 +23,9 @@ namespace RPG.Combat
 
         public void Attack(CombatTarget combatTarget)
         {
-            Target = combatTarget.transform;
+            Target = combatTarget;
 
-            if (Target != null && !IsInRange(Target)) Debug.Log("not attacking target");
+            if (!CanBeAttacked(Target)) Debug.Log("not attacking target");
             else
             {
                 Debug.Log("attacking target");
@@ -38,17 +37,20 @@ namespace RPG.Combat
             GetComponent<Animator>().SetTrigger("stopAttack");
             Target = null;
         }
-
-
-        private bool IsInRange(Transform target)
+        public bool CanBeAttacked(CombatTarget Target)
         {
-            return Vector3.Distance(transform.position, target.position) < WeaponRange;
+            return Target != null && !Target.GetComponent<Health>().IsDead() && IsInRange(Target);
+        }
+
+        private bool IsInRange(CombatTarget target)
+        {
+            return Vector3.Distance(transform.position, target.transform.position) < WeaponRange;
         }
 
 
         private void AttackBehaviour()
         {
-            // transform.LookAt(Target.transform);
+            transform.LookAt(Target.transform);
             if (timeSinceLastAttack > timeBetweenAttacks)
             {
                 // This will trigger the Hit() event.
@@ -61,8 +63,7 @@ namespace RPG.Combat
         void Hit()
         {
             if (Target == null) return;
-            Health healthComponent = Target.GetComponent<Health>();
-            healthComponent.TakeDamage(weaponDamage);
+            Target.GetComponent<Health>().TakeDamage(weaponDamage);
         }
 
         private void TriggerAttack()

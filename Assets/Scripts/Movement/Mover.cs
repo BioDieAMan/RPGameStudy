@@ -1,11 +1,10 @@
 using UnityEngine;
-using RPG.Control;
 
 namespace RPG.Movement
 {
     public class Mover : MonoBehaviour
     {
-        private float Speed;
+        public float Speed;
 
         // Update is called once per frame
         void Update()
@@ -15,7 +14,7 @@ namespace RPG.Movement
 
         private void UpdateAnimator()
         {
-            Speed = GetComponent<PlayerController>().Speed;
+            // Speed = GetComponent<PlayerController>().Speed;
             GetComponent<Animator>().SetFloat("Speed", Speed);
         }
     }

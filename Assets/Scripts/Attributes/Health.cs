@@ -7,6 +7,8 @@ namespace RPG.Attributes
     {
         [SerializeField] float health = 100f;
 
+        private bool isDead = false;
+
         public void TakeDamage(float damage)
         {
             health = Mathf.Max(health - damage, 0);
@@ -18,10 +20,16 @@ namespace RPG.Attributes
             Debug.Log("Current health: " + health);
         }
 
+        public bool IsDead()
+        {
+            return isDead;
+        }
+
         private void Die()
         {
-            // GetComponent<Animator>().SetTrigger("die");
-            Debug.Log("Dead");
+            if (isDead) return;
+            isDead = true;
+            GetComponent<Animator>().SetTrigger("die");
         }
     }
 }
