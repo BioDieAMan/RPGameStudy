@@ -394,6 +394,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 20
+--- !u!114 &6715830708129494362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5141588443893621299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64f8e5b1fc416094cb931d3800d8cc04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponRange: 5
+  timeBetweenAttacks: 1
+  weaponDamage: 8
 --- !u!4 &5141588443893621311 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1001258781966456414, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}

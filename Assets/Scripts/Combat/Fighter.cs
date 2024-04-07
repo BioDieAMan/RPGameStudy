@@ -6,7 +6,7 @@ namespace RPG.Combat
 {
     public class Fighter : MonoBehaviour, IAction
     {
-        [SerializeField] float WeaponRange = 5f;
+        [SerializeField] float weaponRange = 5f;
         [SerializeField] float timeBetweenAttacks = 1f;
 
         [SerializeField] float weaponDamage = 8f;
@@ -44,7 +44,7 @@ namespace RPG.Combat
 
         private bool IsInRange(CombatTarget target)
         {
-            return Vector3.Distance(transform.position, target.transform.position) < WeaponRange;
+            return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
         }
 
 
