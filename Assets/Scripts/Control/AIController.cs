@@ -3,6 +3,7 @@ using RPG.Combat;
 using RPG.Attributes;
 using RPG.Movement;
 using RPG.Core;
+using GameDevTV.Utils;
 
 namespace RPG.Control
 {
@@ -23,8 +24,7 @@ namespace RPG.Control
         Mover mover;
         GameObject player;
 
-
-
+        LazyValue<Vector3> guardPosition;
         float timeSinceLastSawPlayer = Mathf.Infinity;
         float timeSinceArrivedAtWaypoint = Mathf.Infinity;
         float timeSinceAggrevated = Mathf.Infinity;
@@ -45,6 +45,9 @@ namespace RPG.Control
             health = GetComponent<Health>();
             mover = GetComponent<Mover>();
             player = GameObject.FindWithTag("Player");
+
+            guardPosition = new LazyValue<Vector3>(GetGuardPosition);
+            guardPosition.ForceInit();
         }
 
         private void Update()
@@ -53,6 +56,7 @@ namespace RPG.Control
 
             if (CanAttack() && fighter.CanBeAttacked(player.GetComponent<CombatTarget>())) AttackBehaviour();
             else if (timeSinceLastSawPlayer < suspicionTime) SuspicionBehaviour();
+            else PatrolBehaviour();
 
             UpdateTimers();
         }
@@ -67,7 +71,67 @@ namespace RPG.Control
             timeSinceLastSawPlayer = 0;
             fighter.Attack(player.GetComponent<CombatTarget>());
 
+            AggrevateNearbyEnemies();
         }
+
+        private void PatrolBehaviour()
+        {
+            Vector3 nextPosition = guardPosition.value;
+
+            if (patrolPath != null)
+            {
+                if (AtWaypoint())
+                {
+                    timeSinceArrivedAtWaypoint = 0;
+                    CycleWaypoint();
+                }
+                nextPosition = GetCurrentWaypoint();
+            }
+
+            if (timeSinceArrivedAtWaypoint > waypointDwellTime)
+            {
+                mover.StartMoveAction(nextPosition, patrolSpeedFraction);
+            }
+        }
+
+        private void AggrevateNearbyEnemies()
+        {
+            RaycastHit[] hits = Physics.SphereCastAll(transform.position, shoutDistance, Vector3.up, 0);
+            foreach (RaycastHit hit in hits)
+            {
+                AIController ai = hit.collider.GetComponent<AIController>();
+                if (ai == null) continue;
+
+                ai.Aggrevate();
+            }
+        }
+
+        private void Aggrevate()
+        {
+            timeSinceAggrevated = 0;
+        }
+
+        private bool AtWaypoint()
+        {
+            float distanceToWaypoint = Vector3.Distance(transform.position, GetCurrentWaypoint());
+            return distanceToWaypoint < waypointTolerance;
+        }
+
+        private void CycleWaypoint()
+        {
+            currentWaypointIndex = patrolPath.GetNextIndex(currentWaypointIndex);
+        }
+
+        private Vector3 GetCurrentWaypoint()
+        {
+            return patrolPath.GetWaypoint(currentWaypointIndex);
+        }
+
+        private Vector3 GetGuardPosition()
+        {
+            return transform.position;
+        }
+
 
         private void UpdateTimers()
         {
