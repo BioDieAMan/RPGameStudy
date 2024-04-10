@@ -304,13 +304,17 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 1001258781966456413, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1001258781966456414, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1001258781966456414, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.36
+      value: -14.67
       objectReference: {fileID: 0}
     - target: {fileID: 1001258781966456414, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
       propertyPath: m_LocalPosition.y
@@ -318,7 +322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1001258781966456414, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.69
+      value: 0.44
       objectReference: {fileID: 0}
     - target: {fileID: 1001258781966456414, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
       propertyPath: m_LocalRotation.w
@@ -347,6 +351,10 @@ PrefabInstance:
     - target: {fileID: 1001258781966456414, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1001258781966456415, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
@@ -394,6 +402,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 20
+--- !u!114 &3924507569621776784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5141588443893621299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e32a8f394149e984cb465632722844f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseDistance: 5
+  suspicionTime: 3
+  agroCooldownTime: 5
+  patrolPath: {fileID: 0}
+  waypointTolerance: 1
+  waypointDwellTime: 0
+  patrolSpeedFraction: 0.3
+  shoutDistance: 5
 --- !u!114 &6715830708129494362
 MonoBehaviour:
   m_ObjectHideFlags: 0

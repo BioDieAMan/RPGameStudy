@@ -14,7 +14,6 @@ namespace RPG.Movement
 
         private void Awake()
         {
-
             navMeshAgent = GetComponent<NavMeshAgent>();
         }
 
@@ -34,6 +33,7 @@ namespace RPG.Movement
         {
             navMeshAgent.destination = destination;
             navMeshAgent.speed = maxSpeed * Mathf.Clamp01(speedFraction);
+            Speed = navMeshAgent.speed;
             navMeshAgent.isStopped = false;
         }
         public void Cancel()
