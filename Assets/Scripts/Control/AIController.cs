@@ -15,7 +15,7 @@ namespace RPG.Control
         [SerializeField] float agroCooldownTime = 5f;
         [SerializeField] PatrolPath patrolPath;
         [SerializeField] float waypointTolerance = 1f;
-        [SerializeField] float waypointDwellTime = 0f;
+        [SerializeField] float waypointDwellTime = 5f;
         [Range(0, 1)]
         [SerializeField] float patrolSpeedFraction = 0.2f;
         [SerializeField] float shoutDistance = 5f;
@@ -62,7 +62,7 @@ namespace RPG.Control
         {
             if (health.IsDead()) return;
 
-            if (CanAttack() && fighter.CanBeAttacked(player.GetComponent<CombatTarget>())) AttackBehaviour();
+            if (CanAttack()) AttackBehaviour();
             else if (timeSinceLastSawPlayer < suspicionTime) SuspicionBehaviour();
             else PatrolBehaviour();
 
@@ -73,6 +73,7 @@ namespace RPG.Control
         {
             timeSinceAggrevated = 0;
         }
+
         private void UpdateTimers()
         {
             timeSinceLastSawPlayer += Time.deltaTime;
@@ -115,15 +116,21 @@ namespace RPG.Control
         {
             return patrolPath.GetWaypoint(currentWaypointIndex);
         }
+
         private void SuspicionBehaviour()
         {
             GetComponent<ActionScheduler>().CancelCurrentAction();
+        }
+        private bool IsInRange(CombatTarget target)
+        {
+            return Vector3.Distance(transform.position, target.transform.position) < fighter.GetWeaponRange();
         }
 
         private void AttackBehaviour()
         {
             timeSinceLastSawPlayer = 0;
-            fighter.Attack(player.GetComponent<CombatTarget>());
+            if (IsInRange(player.GetComponent<CombatTarget>())) fighter.Attack(player.GetComponent<CombatTarget>());
+            else mover.StartMoveAction(player.transform.position, patrolSpeedFraction);
 
             AggrevateNearbyEnemies();
         }

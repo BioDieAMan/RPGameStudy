@@ -31,18 +31,23 @@ namespace RPG.Movement
 
         public void MoveTo(Vector3 destination, float speedFraction)
         {
+            navMeshAgent.isStopped = false;
             navMeshAgent.destination = destination;
             navMeshAgent.speed = maxSpeed * Mathf.Clamp01(speedFraction);
             Speed = navMeshAgent.speed;
-            navMeshAgent.isStopped = false;
         }
+
         public void Cancel()
         {
             navMeshAgent.isStopped = true;
+            Speed = 0;
         }
+
         private void UpdateAnimator()
         {
-            // Speed = GetComponent<PlayerController>().Speed;
+            Vector3 velocity = navMeshAgent.velocity;
+            Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+            Speed = localVelocity.z;
             GetComponent<Animator>().SetFloat("Speed", Speed);
         }
     }

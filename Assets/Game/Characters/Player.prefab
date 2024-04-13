@@ -112,7 +112,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1001258781966456412, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
 --- !u!4 &5124688479158259300 stripped
 Transform:
@@ -136,21 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c4e89a68ee5c2541abfc74b5e776037, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8861531611531108150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5124688479158259304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64f8e5b1fc416094cb931d3800d8cc04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponRange: 5
-  timeBetweenAttacks: 1
-  weaponDamage: 8
+  Speed: 0
 --- !u!114 &-702828984115676572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,3 +163,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d437866c2b7d6f44c9ffc2e27d36b3c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8861531611531108150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5124688479158259304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64f8e5b1fc416094cb931d3800d8cc04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponRange: 5
+  timeBetweenAttacks: 1
+  weaponDamage: 8

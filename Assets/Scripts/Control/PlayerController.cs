@@ -1,7 +1,6 @@
 using RPG.Combat;
 using RPG.Core;
 using UnityEngine;
-using RPG.Movement;
 using RPG.Attributes;
 
 namespace RPG.Control
@@ -10,7 +9,7 @@ namespace RPG.Control
     {
         private Vector3 TargetDirection;
         // ActionStore actionStore;
-        // public float Speed;
+        public float Speed;
         private float MaxSpeed = 10f;
         private float MinSpeed = 0f;
         private readonly float Acceleration = 20f;
@@ -26,6 +25,8 @@ namespace RPG.Control
             if (GetComponent<Health>().IsDead()) return;
             MoveByKey();
             if (InteractWithCombat()) return;
+
+            GetComponent<Animator>().SetFloat("Speed", Speed);
         }
 
         public void MoveByKey()
@@ -44,20 +45,21 @@ namespace RPG.Control
             if (GetDirectionKey())
             {
                 if (TargetDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(TargetDirection), 2.6f * Time.deltaTime);
+                Speed += Acceleration * Time.deltaTime;
+                Speed = Mathf.Min(Speed, MaxSpeed);
 
-                GetComponent<Mover>().Speed += Acceleration * Time.deltaTime;
-                GetComponent<Mover>().Speed = Mathf.Min(GetComponent<Mover>().Speed, MaxSpeed);
-
-                transform.position = transform.position + GetComponent<Mover>().Speed * Time.deltaTime * transform.forward;
+                transform.position = transform.position + Speed * Time.deltaTime * transform.forward;
             }
             else
             {
-                GetComponent<Mover>().Speed -= Acceleration * Time.deltaTime;
-                GetComponent<Mover>().Speed = Mathf.Max(GetComponent<Mover>().Speed, MinSpeed);
-                if (GetComponent<Mover>().Speed != 0) transform.position = transform.position + GetComponent<Mover>().Speed * Time.deltaTime * transform.forward;
+                Speed -= Acceleration * Time.deltaTime;
+                Speed = Mathf.Max(Speed, MinSpeed);
+                if (Speed != 0) transform.position = transform.position + Speed * Time.deltaTime * transform.forward;
             }
 
             if (GetDirectionKeyUp()) TargetDirection = transform.forward;
+
+
 
         }
 
@@ -77,7 +79,7 @@ namespace RPG.Control
 
         public void Cancel()
         {
-            GetComponent<Mover>().Speed = 0;
+            Speed = 0;
             IsMoving = false;
         }
 

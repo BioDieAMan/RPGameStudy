@@ -42,6 +42,11 @@ namespace RPG.Combat
             return Target != null && !Target.GetComponent<Health>().IsDead() && IsInRange(Target);
         }
 
+        public float GetWeaponRange()
+        {
+            return weaponRange;
+        }
+
         private bool IsInRange(CombatTarget target)
         {
             return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
@@ -65,6 +70,7 @@ namespace RPG.Combat
             if (Target == null) return;
             Target.GetComponent<Health>().TakeDamage(weaponDamage);
         }
+
 
         private void TriggerAttack()
         {
