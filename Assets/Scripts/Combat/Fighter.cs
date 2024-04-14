@@ -28,7 +28,7 @@ namespace RPG.Combat
             if (!CanBeAttacked(Target)) Debug.Log("not attacking target");
             else
             {
-                Debug.Log("attacking target");
+                // Debug.Log("attacking target");
                 AttackBehaviour();
             }
         }

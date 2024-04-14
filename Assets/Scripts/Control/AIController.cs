@@ -95,10 +95,7 @@ namespace RPG.Control
                 nextPosition = GetCurrentWaypoint();
             }
 
-            if (timeSinceArrivedAtWaypoint > waypointDwellTime)
-            {
-                mover.StartMoveAction(nextPosition, patrolSpeedFraction);
-            }
+            if (timeSinceArrivedAtWaypoint > waypointDwellTime) mover.StartMoveAction(nextPosition, patrolSpeedFraction);
         }
 
         private bool AtWaypoint()
@@ -140,9 +137,9 @@ namespace RPG.Control
             RaycastHit[] hits = Physics.SphereCastAll(transform.position, shoutDistance, Vector3.up, 0);
             foreach (RaycastHit hit in hits)
             {
+                if (hit.transform.name == transform.name) continue;
                 AIController ai = hit.collider.GetComponent<AIController>();
                 if (ai == null) continue;
-
                 ai.Aggrevate();
             }
         }

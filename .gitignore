@@ -77,3 +77,12 @@ crashlytics-build.properties
 
 # Local History for Visual Studio Code
 .history/
+
+# Images
+*.png
+*.png.meta
+*.jpg
+*.jpg.meta
+
+# Asset Packs
+Assets/Asset Packs/*

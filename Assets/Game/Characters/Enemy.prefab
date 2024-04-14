@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 0
-  maxSpeed: 6
+  maxSpeed: 8
   maxNavPathLength: 40
 --- !u!114 &3924507569621776784
 MonoBehaviour:
@@ -441,12 +441,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e32a8f394149e984cb465632722844f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseDistance: 5
+  chaseDistance: 10
   suspicionTime: 3
   agroCooldownTime: 5
   patrolPath: {fileID: 0}
   waypointTolerance: 2
-  waypointDwellTime: 5
+  waypointDwellTime: 4
   patrolSpeedFraction: 0.24
   shoutDistance: 5
 --- !u!114 &6715830708129494362
@@ -461,9 +461,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64f8e5b1fc416094cb931d3800d8cc04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponRange: 5
+  weaponRange: 4
   timeBetweenAttacks: 1
-  weaponDamage: 8
+  weaponDamage: 5
 --- !u!4 &5141588443893621311 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1001258781966456414, guid: 56e1762c0d7fdae44977f668cc31fc64, type: 3}
