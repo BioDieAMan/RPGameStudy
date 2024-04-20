@@ -20,11 +20,13 @@ namespace RPG.Control
             IsMoving = true;
         }
 
+
         private void Update()
         {
             if (GetComponent<Health>().IsDead()) return;
             MoveByKey();
             if (InteractWithCombat()) return;
+            // InteractWithCombat();
 
             GetComponent<Animator>().SetFloat("Speed", Speed);
         }
@@ -44,7 +46,7 @@ namespace RPG.Control
 
             if (GetDirectionKey())
             {
-                if (TargetDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(TargetDirection), 2.6f * Time.deltaTime);
+                if (TargetDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(TargetDirection), 1.4f * Time.deltaTime);
                 Speed += Acceleration * Time.deltaTime;
                 Speed = Mathf.Min(Speed, MaxSpeed);
 
@@ -65,6 +67,9 @@ namespace RPG.Control
 
         private bool InteractWithCombat()
         {
+
+            // if (Input.GetMouseButtonDown(0)) GetComponent<Fighter>().Attack();
+
             RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
 
             foreach (RaycastHit hit in hits)

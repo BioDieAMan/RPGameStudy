@@ -12,12 +12,7 @@ namespace RPG.Attributes
         public void TakeDamage(float damage)
         {
             health = Mathf.Max(health - damage, 0);
-            if (health == 0)
-            {
-                Die();
-            }
-            Debug.Log("Damage taken: " + damage);
-            Debug.Log("Current health: " + health);
+            if (health == 0) Die();
         }
 
         public bool IsDead()

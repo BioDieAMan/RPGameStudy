@@ -18,20 +18,20 @@ namespace RPG.Combat
             timeSinceLastAttack += Time.deltaTime;
             AnimatorStateInfo stateInfo = GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
             if (stateInfo.normalizedTime >= 1.0f && stateInfo.IsName("Attack")) GetComponent<Animator>().SetTrigger("stopAttack");
+        }
 
+        public void Attack()
+        {
+            AttackBehaviourWithTarget();
         }
 
         public void Attack(CombatTarget combatTarget)
         {
             Target = combatTarget;
-
-            if (!CanBeAttacked(Target)) Debug.Log("not attacking target");
-            else
-            {
-                // Debug.Log("attacking target");
-                AttackBehaviour();
-            }
+            if (CanBeAttacked(Target)) AttackBehaviourWithTarget();
         }
+
+
         public void Cancel()
         {
             GetComponent<Animator>().SetTrigger("stopAttack");
@@ -53,7 +53,7 @@ namespace RPG.Combat
         }
 
 
-        private void AttackBehaviour()
+        private void AttackBehaviourWithTarget()
         {
             transform.LookAt(Target.transform);
             if (timeSinceLastAttack > timeBetweenAttacks)
