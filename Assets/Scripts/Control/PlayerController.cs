@@ -2,6 +2,7 @@ using RPG.Combat;
 using RPG.Core;
 using UnityEngine;
 using RPG.Attributes;
+using Cinemachine;
 
 namespace RPG.Control
 {
@@ -12,12 +13,14 @@ namespace RPG.Control
         public float Speed;
         private float MaxSpeed = 10f;
         private float MinSpeed = 0f;
-        private readonly float Acceleration = 20f;
+        private readonly float Acceleration = 10f;
         private bool IsMoving;
+        private CinemachineVirtualCamera VirtualCam;
 
         private void Awake()
         {
             IsMoving = true;
+            VirtualCam = GameObject.FindWithTag("MainCamera").GetComponent<CinemachineVirtualCamera>();
         }
 
 
@@ -41,12 +44,14 @@ namespace RPG.Control
 
             if (!IsMoving) return;
 
-            if (Input.GetKey(KeyCode.D)) TargetDirection = transform.right;
-            else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S)) TargetDirection = -transform.right;
+            if (Input.GetKey(KeyCode.D)) TargetDirection = VirtualCam.transform.right;
+            else if (Input.GetKey(KeyCode.A)) TargetDirection = -VirtualCam.transform.right;
+            else if (Input.GetKey(KeyCode.S)) TargetDirection = -VirtualCam.transform.forward;
+            else if (Input.GetKey(KeyCode.W)) TargetDirection = VirtualCam.transform.forward;
 
             if (GetDirectionKey())
             {
-                if (TargetDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(TargetDirection), 1.4f * Time.deltaTime);
+                if (TargetDirection != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(TargetDirection), 2f * Time.deltaTime);
                 Speed += Acceleration * Time.deltaTime;
                 Speed = Mathf.Min(Speed, MaxSpeed);
 
