@@ -15,12 +15,12 @@ namespace RPG.Control
         private float MinSpeed = 0f;
         private readonly float Acceleration = 10f;
         private bool IsMoving;
-        private CinemachineVirtualCamera VirtualCam;
+        private GameObject VirtualCam;
 
         private void Awake()
         {
             IsMoving = true;
-            VirtualCam = GameObject.FindWithTag("MainCamera").GetComponent<CinemachineVirtualCamera>();
+            VirtualCam = GameObject.FindWithTag("MainCamera");
         }
 
 
@@ -65,9 +65,6 @@ namespace RPG.Control
             }
 
             if (GetDirectionKeyUp()) TargetDirection = transform.forward;
-
-
-
         }
 
         private bool InteractWithCombat()
