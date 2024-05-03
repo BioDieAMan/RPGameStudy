@@ -14,12 +14,10 @@ namespace RPG.Control
         private float MaxSpeed = 10f;
         private float MinSpeed = 0f;
         private readonly float Acceleration = 10f;
-        private bool IsMoving;
         private GameObject VirtualCam;
 
         private void Awake()
         {
-            IsMoving = true;
             VirtualCam = GameObject.FindWithTag("MainCamera");
         }
 
@@ -29,20 +27,13 @@ namespace RPG.Control
             if (GetComponent<Health>().IsDead()) return;
             MoveByKey();
             if (InteractWithCombat()) return;
-            // InteractWithCombat();
 
             GetComponent<Animator>().SetFloat("Speed", Speed);
         }
 
         public void MoveByKey()
         {
-            if (GetDirectionKeyDown())
-            {
-                GetComponent<ActionScheduler>().StartAction(this);
-                IsMoving = true;
-            }
-
-            if (!IsMoving) return;
+            if (GetDirectionKeyDown()) GetComponent<ActionScheduler>().StartAction(this);
 
             if (Input.GetKey(KeyCode.D)) TargetDirection = VirtualCam.transform.right;
             else if (Input.GetKey(KeyCode.A)) TargetDirection = -VirtualCam.transform.right;
@@ -87,7 +78,7 @@ namespace RPG.Control
         public void Cancel()
         {
             Speed = 0;
-            IsMoving = false;
+            GetComponent<Animator>().SetFloat("Speed", Speed);
         }
 
         private bool GetDirectionKeyDown()
